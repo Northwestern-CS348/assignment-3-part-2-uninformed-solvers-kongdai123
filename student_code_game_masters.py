@@ -86,22 +86,23 @@ class TowerOfHanoiGame(GameMaster):
         end = movable_statement.terms[2]
         end_num = self._get_peg(end)
         #retract top
-        print ('initial state')
+        #print ('initial state')
         self.kb.kb_retract(Fact(['top', str(disk), str(start)]))
-        print ('now has removed top fact')
+        #print ('now has removed top fact')
         #retract fact
         self.kb.kb_retract(Fact(['on', str(disk), str(start)]))
-        print ('now has removed on peg fact')
+        #print ('now has removed on peg fact')
         #assign new top
 
         for i in self.kb.facts:
             if i.statement.predicate == 'ontop' and i.statement.terms[0] == disk:
-                print(i)
+                #print(i)
                 self.kb.kb_assert(Fact(['top', i.statement.terms[1], start]))
                 #retract old ontop
                 self.kb.kb_retract(i)
-        print('new top established')
-        print('leaving finished')
+
+        #('new top established')
+        #print('leaving finished')
         #find the old top of the end peg and add the disk onto that
         for i in self.kb.facts:
             if i.statement.predicate == 'top' and i.statement.terms[1] == end:
@@ -112,8 +113,7 @@ class TowerOfHanoiGame(GameMaster):
                 break
 
 
-
-        print('landing finished')
+        #print('landing finished')
         return
 
         #START MOVING
@@ -132,7 +132,7 @@ class TowerOfHanoiGame(GameMaster):
         pred = movable_statement.predicate
         sl = movable_statement.terms
         newList = [pred, sl[0], sl[2], sl[1]]
-        print('reversing')
+        #print('reversing')
         self.makeMove(Statement(newList))
 
 class Puzzle8Game(GameMaster):
@@ -220,22 +220,21 @@ class Puzzle8Game(GameMaster):
         end_y = self._get_pos(pos4)
 
 
-        print('initial state')
+        #('initial state')
 
         for i in self.kb.facts:
             if i.statement.predicate == 'coords' and i.statement.terms[0] == tile:
                 start_fact = i
             if i.statement.predicate == 'coords' and str(i.statement.terms[0]) == 'empty':
                 end_fact = i
-        print('position located')
+        #print('position located')
 
         self.kb.kb_retract(start_fact)
         self.kb.kb_retract(end_fact)
         self.kb.kb_assert(Fact(['coords', 'empty', pos1, pos2]))
         self.kb.kb_assert(Fact(['coords', tile, pos3, pos4]))
-        print("change done")
+        #print("change done")
 
-        pass
 
     def reverseMove(self, movable_statement):
         """

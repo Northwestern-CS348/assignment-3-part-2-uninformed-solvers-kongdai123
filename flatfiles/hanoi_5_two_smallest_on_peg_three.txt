@@ -1,6 +1,6 @@
 """
 For a game where there are 5 disks,
-write down the Facts and Rules to model the game state where 
+write down the Facts and Rules to model the game state where
 disk1 and disk2 (the smallest two) are on peg3, and
 other disks are on peg1.
 
@@ -13,9 +13,36 @@ other disks are on peg1.
    -----|----- disk5 |          --|-- disk2
 ==========================================
        peg1         peg2         peg3
-       
-Example: 
+
+Example:
 fact: (pred obj1 obj2)
 rule: ((pred obj1 obj2) (pred obj2 obj3)) -> (pred obj1 obj3)
 
 """
+fact: (peg peg1)
+fact: (peg peg2)
+fact: (peg peg3)
+fact: (neq peg1 peg2)
+fact: (neq peg2 peg3)
+fact: (neq peg3 peg1)
+fact: (on disk1 peg3)
+fact: (on disk2 peg3)
+fact: (on disk3 peg1)
+fact: (on disk4 peg1)
+fact: (on disk5 peg1)
+fact: (smaller disk1 disk2)
+fact: (smaller disk2 disk3)
+fact: (smaller disk3 disk4)
+fact: (smaller disk4 disk5)
+fact: (smaller disk5 base)
+fact: (ontop disk1 disk2)
+fact: (ontop disk2 base)
+fact: (ontop disk3 disk4)
+fact: (ontop disk4 disk5)
+fact: (ontop disk5 base)
+fact: (top disk3 peg1)
+fact: (top base peg2)
+fact: (top disk1 peg3)
+rule: ((neq ?x ?y)) -> (neq ?y ?x)
+rule: ((smaller ?x ?y) (smaller ?y ?w)) -> (smaller ?x ?w)
+rule: ((top ?x ?y) (neq ?y ?z) (top ?w ?z) (smaller ?x ?w)) -> (movable ?x ?y ?z)
