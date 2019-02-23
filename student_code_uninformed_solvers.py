@@ -36,12 +36,12 @@ class SolverDFS(UninformedSolver):
         ## and TF as value
         movables = self.gm.getMovables()
 
-        print(state)
+        #print(state)
         #print(movables)
         #this step simply populates parent state with children
         #print('start exploring')
         if state == self.victoryCondition:
-            print(depth)
+            #print(depth)
             return True
 
         for m in movables:
@@ -104,10 +104,10 @@ class SolverBFS(UninformedSolver):
         if len(queue) == 0:
             queue.append([self.currentState, []])
         #print('start exploring')
-        print(queue[0][0].state)
+        #print(queue[0][0].state)
         if state == self.victoryCondition:
             queue = []
-            print(depth)
+            #print(depth)
             return True
         #populate children
         for m in movables:
@@ -139,14 +139,43 @@ class SolverBFS(UninformedSolver):
         nextChild = queue[1][0]
         self.currentState = nextChild
         i = 0
-        #backtracking
-        while i < len(queue[0][1]):
-            self.gm.reverseMove(queue[0][1][i])
-            i = i + 1
+        j = 0
+        l = len(queue[0][1])
+        if len(queue[0][1]) < len(queue[1][1]):
+            while i < len(queue[0][1]):
+                self.gm.reverseMove(queue[0][1][i])
+                i = i + 1
+            i = len(queue[1][1])
+            while i > 0:
+                self.gm.makeMove(queue[1][1][i - 1])
+                i = i - 1
 
-        i = len(queue[1][1])
-        while i > 0:
-            self.gm.makeMove(queue[1][1][i - 1])
-            i = i - 1
+        else:
+            bool = False
+            k = 0
+            while j < l:
+                if queue[0][1][j] == queue[1][1][j]:
+                    bool = True
+                    break
+                j = j + 1
+                k = k + 1
+
+            while k < l:
+                if queue[0][1][k] != queue[1][1][k]: bool = False
+                k = k + 1
+
+            if bool: l = j
+            i = 0
+        #backtracking
+            while i < l:
+                self.gm.reverseMove(queue[0][1][i])
+                i = i + 1
+
+            while i > 0:
+                self.gm.makeMove(queue[1][1][i - 1])
+                i = i - 1
+
+
+
         del queue[0]
         return False
